@@ -15,9 +15,6 @@ CMD ["/home/app/run.sh"]
 # Move service code files into place
 COPY src/ /home/app/
 
-# Move service runner script
-COPY run.sh /home/app/
-
 RUN sudo ln -s "$(which nodejs)" /usr/bin/node
 
 # Install dependencies
