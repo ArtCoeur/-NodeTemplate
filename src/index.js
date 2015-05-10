@@ -19,16 +19,18 @@ context.on('ready', function() {
 
     logger.info('connected');
 
-    // subscribe to events queues
-    var sub = context.socket('SUB');
-
     // parameterise the queue name
+    var queue = 'events';
 
-    sub.connect('events', function() {
+    var sub = context.socket('SUB'),
+        pub = context.socket('PUB');
 
-        // deal with facts as they come in
-        sub.on('data', function(body) {
-            event_router.newFact(JSON.parse(body));
+    pub.connect(queue, function() {
+        sub.connect(queue, function () {
+            // deal with facts as they come in
+            sub.on('data', function(body) {
+                event_router.newFact(sub, pub, JSON.parse(body));
+            });
         });
     });
 });
